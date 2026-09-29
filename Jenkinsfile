@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    // Requiere el plugin "NodeJS" con una instalación llamada "node22"
-    // configurada en Administrar Jenkins > Tools.
+    // Requiere el plugin NodeJS con una instalación llamada "node22"
+    // en Administrar Jenkins > Tools.
     tools {
         nodejs 'node22'
     }
@@ -13,6 +13,7 @@ pipeline {
 
     options {
         timestamps()
+        skipDefaultCheckout()
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
@@ -25,21 +26,18 @@ pipeline {
 
         stage('Instalar dependencias') {
             steps {
-                script {
-                    if (isUnix()) { sh 'npm ci' } else { bat 'npm ci' }
-                }
+                sh 'node -v && npm -v'
+                sh 'npm ci'
             }
         }
 
         stage('Pruebas unitarias') {
             steps {
-                script {
-                    if (isUnix()) { sh 'npm run test:ci' } else { bat 'npm run test:ci' }
-                }
+                sh 'npm run test:ci'
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'reports/junit.xml'
+                    junit 'reports/junit.xml'
                     archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
                 }
             }
@@ -47,14 +45,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    if (isUnix()) { sh 'npm run build' } else { bat 'npm run build' }
-                }
+                sh 'npm run build'
             }
             post {
                 success {
                     archiveArtifacts artifacts: 'dist/**', fingerprint: true
                 }
+            }
+        }
+
+        stage('Deploy simulado') {
+            steps {
+                sh 'mkdir -p prod && cp -r dist/* prod/'
+                sh 'ls -la prod'
+                echo 'Deploy simulado exitoso: archivos copiados a prod/'
             }
         }
     }
