@@ -85,7 +85,7 @@ pipeline {
                     <p><b>Pruebas:</b> <a href="${env.BUILD_URL}testReport">Ver resultados</a></p>
                     <p><b>Consola:</b> <a href="${env.BUILD_URL}console">Ver logs</a></p>
                 """,
-                to: 'juan7.valencia@ucp.edu.co',
+                to: 'juan7.valencia@ucp.edu.co', // Cambiar por el correo del destinatario
                 mimeType: 'text/html'
             )
 
