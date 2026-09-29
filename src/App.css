@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f4f6f8;
+  color: #1f2933;
+}
+
+.calculadora {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 0.85rem;
+  color: #52606d;
+  padding-bottom: 8px;
+}
+
+td {
+  padding: 4px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid #cbd2d9;
+  border-radius: 6px;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #3e7bfa;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #cbd2d9;
+  cursor: not-allowed;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.acciones label input {
+  width: 80px;
+}
+
+.resultado {
+  border-top: 1px solid #e4e7eb;
+  padding-top: 12px;
+}
+
+.error {
+  color: #c62828;
+}
+
+.aprobado,
+.suspendido {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.aprobado {
+  color: #2e7d32;
+}
+
+.suspendido {
+  color: #c62828;
+}
