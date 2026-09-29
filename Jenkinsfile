@@ -64,11 +64,33 @@ pipeline {
     }
 
     post {
-        success {
-            echo 'Pipeline completado: pruebas OK y build generado.'
-        }
-        failure {
-            echo 'El pipeline ha fallado. Revisa los resultados de las pruebas.'
+        always {
+
+            // Publicar reportes HTML (opcional)
+            publishHTML target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'prod',
+                reportFiles: 'index.html',
+                reportName: 'Demo Deploy'
+            ]
+
+            // Notificación por email con el resultado del build
+            emailext(
+                subject: "Pipeline ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <h2>Resultado: ${currentBuild.currentResult}</h2>
+                    <p><b>URL del Build:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p><b>Pruebas:</b> <a href="${env.BUILD_URL}testReport">Ver resultados</a></p>
+                    <p><b>Consola:</b> <a href="${env.BUILD_URL}console">Ver logs</a></p>
+                """,
+                to: 'juan7.valencia@ucp.edu.co',
+                mimeType: 'text/html'
+            )
+
+            // Limpiar workspace
+            cleanWs()
         }
     }
 }
